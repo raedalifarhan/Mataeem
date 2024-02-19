@@ -1,0 +1,6 @@
+@Mataeem_HostAddress = http://localhost:5287
+
+GET {{Mataeem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

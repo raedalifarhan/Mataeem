@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "S/JGVtT8/bBiMwyBpbii6stRfCheh6CJbw7tMPq8afA=",
+  "Source": "Mataeem",
+  "BasePath": "_content/Mataeem",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Mataeem\\wwwroot",
+      "Source": "Mataeem",
+      "ContentRoot": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\",
+      "BasePath": "_content/Mataeem",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
