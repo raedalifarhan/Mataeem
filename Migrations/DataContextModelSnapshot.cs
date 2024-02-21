@@ -183,6 +183,9 @@ namespace Mataeem.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
@@ -346,6 +349,9 @@ namespace Mataeem.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
@@ -476,17 +482,26 @@ namespace Mataeem.Migrations
                     b.Property<Guid?>("FoodBrandId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsMandatory")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("MandatoryCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OptionCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OptionType")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -497,6 +512,12 @@ namespace Mataeem.Migrations
 
                     b.Property<int?>("Rate")
                         .HasColumnType("int");
+
+                    b.Property<decimal?>("RegularPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SellingPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdatedById")
                         .HasColumnType("nvarchar(450)");
@@ -557,6 +578,12 @@ namespace Mataeem.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Rate")
+                        .HasColumnType("int");
 
                     b.Property<string>("RestaurantName")
                         .IsRequired()

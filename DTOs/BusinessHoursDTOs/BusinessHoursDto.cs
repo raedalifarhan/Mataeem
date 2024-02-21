@@ -1,6 +1,6 @@
-﻿namespace Mataeem.DTOs
+﻿namespace Mataeem.DTOs.BusinessHoursDTOs
 {
-    public class BussinessHoursDto
+    public class BusinessHoursDto
     {
         public Guid Id { get; set; }
         public DayOfWeek DayOfWeek { get; set; }

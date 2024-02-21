@@ -8,7 +8,10 @@ namespace Mataeem.Data.Config
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.Property(i => i.Price)
+            builder.Property(i => i.RegularPrice)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Property(i => i.SellingPrice)
                 .HasColumnType("decimal(18,2)");
         }
     }

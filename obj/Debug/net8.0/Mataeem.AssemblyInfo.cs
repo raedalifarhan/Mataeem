@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Mataeem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea0364b86f4af1111db347394cd3fc05f10d2b91")]
 [assembly: System.Reflection.AssemblyProductAttribute("Mataeem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Mataeem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

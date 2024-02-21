@@ -7,6 +7,7 @@ namespace Mataeem.Models
 
         [Required]
         public string MenuName { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
 
         // nav porperties
         public ICollection<Category>? Categories { get; set; }

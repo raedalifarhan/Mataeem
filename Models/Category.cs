@@ -6,6 +6,7 @@ namespace Mataeem.Models
     {
         [Required]
         public string CategoryName { get; set; } = default!;
+        public bool IsActive { get; set; } = true;
 
         // nav properties
         public Menu? Menu { get; set; }

@@ -1,5 +1,10 @@
 ﻿using AutoMapper;
-using Mataeem.DTOs;
+using Mataeem.DTOs.BusinessHoursDTOs;
+using Mataeem.DTOs.CategoryDTOs;
+using Mataeem.DTOs.MenuDTOs;
+using Mataeem.DTOs.ProductDTOs;
+using Mataeem.DTOs.RestaurantDTOs;
+using Mataeem.Lib;
 using Mataeem.Models;
 
 namespace Mataeem.RequestHelpers
@@ -8,37 +13,29 @@ namespace Mataeem.RequestHelpers
     {
         public AutoMappingProfiles()
         {
-            CreateMap<Restaurant, RestaurantDto>()
-                .ForMember(dest => dest.IsOpen, opt => opt.MapFrom(src => IsRestaurantOpenNow(src.OpeningHours)));
+            CreateMap<Restaurant, RestaurantListDto>()
+                .ForMember(dest => dest.IsOpen, opt => opt.MapFrom(src => 
+                    RestaurantHelper.IsRestaurantOpenNow(src.OpeningHours)));
 
             CreateMap<RestaurantSaveDto, Restaurant>();
-        }
+            
+            CreateMap<BusinessHours, BusinessHoursDto>();
 
-        private static bool IsRestaurantOpenNow(IList<BusinessHours>? openingHours)
-        {
-            if (openingHours == null)
-                return true;
+            CreateMap<CategorySaveDto, Category>();
+            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryListDto>();
 
-            // حساب الوقت الحالي
-            var currentTime = DateTime.Now;
+            CreateMap<MenuSaveDto, Menu>();
+            CreateMap<Menu, MenuListDto>();
+            CreateMap<Menu, MenuDto>();
 
-            // حساب اليوم الحالي بناءً على التوقيت المحلي
-            var currentDay = currentTime.DayOfWeek;
+            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductListDto>();
 
-            // التحقق مما إذا كان المطعم مفتوحًا في الوقت الحالي ويوم الأسبوع الحالي
-            foreach (var hours in openingHours)
-            {
-                if (hours.DayOfWeek == currentDay)
-                {
-                    // التحقق من الوقت
-                    if (currentTime.TimeOfDay >= hours.OpenTime && currentTime.TimeOfDay <= hours.CloseTime)
-                    {
-                        return true; // المطعم مفتوح في الوقت الحالي
-                    }
-                }
-            }
+            CreateMap<Product, OptionDto>();
 
-            return false; // المطعم مغلق في الوقت الحالي
+            CreateMap<Product, OptionValueDto>();
+
         }
     }
 

@@ -24,7 +24,10 @@ namespace Mataeem.Extensions
 
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IRestaurantRepository), typeof(RestaurantRepository));
-            services.AddScoped(typeof(IBussinessHoursRepository), typeof(BussinessHoursRepository));
+            services.AddScoped(typeof(IBusinessHoursRepository), typeof(BusinessHoursRepository));
+            services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
+            services.AddScoped(typeof(IMenuRepository), typeof(MenuRepository));
+            services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
 
 
             return services;

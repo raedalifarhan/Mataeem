@@ -16,6 +16,8 @@ namespace Mataeem.Models
 
         public string? District { get; set; }
 
+        public int? Rate { get; set; }
+
         public string? Address { get; set; } = default!;
 
         public string? ContactNumber { get; set; }
@@ -24,7 +26,10 @@ namespace Mataeem.Models
 
         public string? Website { get; set; }
 
+        public string? PictureUrl { get; set; }
+
         public bool IsActive { get; set; } = true;
+
 
 
         // nav properties

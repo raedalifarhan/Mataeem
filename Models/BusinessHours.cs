@@ -4,7 +4,7 @@ namespace Mataeem.Models
 {
     public class BusinessHours : BaseEntity
     {
-        public DayOfWeek DayOfWeek { get; set; }
+        public DayOfWeek DayOfWeek { get; set; } = new();
 
         [Required]
         public TimeSpan OpenTime { get; set; }

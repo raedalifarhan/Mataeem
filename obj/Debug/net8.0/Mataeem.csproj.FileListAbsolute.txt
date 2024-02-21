@@ -165,3 +165,4 @@ D:\HiPhone\Mataeem\Mataeem\obj\Debug\net8.0\Mataeem.csproj.CopyComplete
 D:\HiPhone\Mataeem\Mataeem\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 D:\HiPhone\Mataeem\Mataeem\bin\Debug\net8.0\System.Text.Json.dll
 D:\HiPhone\Mataeem\Mataeem\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+D:\HiPhone\Mataeem\Mataeem\obj\Debug\net8.0\Mataeem.sourcelink.json

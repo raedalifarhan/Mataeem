@@ -12,9 +12,16 @@ namespace Mataeem.Models
 
         public string? Description { get; set; }
 
-        public float? Price { get; set; }
+        public decimal? RegularPrice { get; set; }
+        public decimal? SellingPrice { get; set; }
 
         public int? Rate { get; set; }
+
+        public ProductOptionType? OptionType { get; set; }
+
+        public int? OptionCount { get; set; }
+        public bool IsMandatory { get; set; } = false;
+        public int? MandatoryCount { get; set; }
 
 
         // van porperties

@@ -1,4 +1,4 @@
-using Mataeem.DTOs;
+using Mataeem.DTOs.RestaurantDTOs;
 using Mataeem.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +18,15 @@ namespace Mataeem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<RestaurantDto>>> GetAllRestaurants()
+        public async Task<ActionResult<List<RestaurantListDto>>> GetAllRestaurants()
         {
             return Ok(await _restaurantRepository.GetAllRestaurants());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RestaurantDetailsDto>> GetRestaurant(Guid id)
+        {
+            return Ok(await _restaurantRepository.GetRestaurant(id));
         }
 
         [HttpPost]
@@ -28,7 +34,8 @@ namespace Mataeem.Controllers
         {
             var result = await _restaurantRepository.CreateRestaurant(model);
 
-            if (!result) return BadRequest("An error accured during Save restaurant ");
+            if (!result) return BadRequest("An error accured during Save restaurant, " +
+                "check model field and picture extencion.");
 
             return Ok("Created Successfully");
         }
