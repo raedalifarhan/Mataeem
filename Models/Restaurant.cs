@@ -36,10 +36,8 @@ namespace Mataeem.Models
         public Menu? Menu {  get; set; }
         public Guid? MenuId { get; set; }
 
-        public AppUser? Driver { get; set; }
-        public string? DriverId { get; set; }
-
         public IList<BusinessHours>? OpeningHours { get; set; }
+        public ICollection<DriverRestaurant>? DriverRestaurants { get; set; }
 
 
         // auditing properties

@@ -1,13 +1,14 @@
 using Mataeem.DTOs.MenuDTOs;
 using Mataeem.Interfaces;
+using Mataeem.RequestHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mataeem.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class MenusController : ControllerBase
     {
         private readonly IMenuRepository _menuRepository;
@@ -24,6 +25,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> CreateMenu(MenuSaveDto model)
         {
             var result = await _menuRepository.CreateMenu(model);
@@ -34,6 +36,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> UpdateMenu(Guid id, MenuSaveDto model)
         {
 
@@ -45,6 +48,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> DeleteMenu(Guid id)
         {
 

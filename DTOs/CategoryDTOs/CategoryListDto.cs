@@ -1,6 +1,4 @@
-﻿using Mataeem.DTOs.ProductDTOs;
-
-namespace Mataeem.DTOs.CategoryDTOs
+﻿namespace Mataeem.DTOs.CategoryDTOs
 {
     public class CategoryListDto
     {

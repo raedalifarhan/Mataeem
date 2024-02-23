@@ -31,6 +31,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = $"{RolesNames.IT}")]
         public async Task<ActionResult> CreateRestaurant(RestaurantSaveDto model)
         {
             var result = await _restaurantRepository.CreateRestaurant(model);
@@ -42,6 +43,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = $"{RolesNames.IT}")]
         public async Task<ActionResult> UpdateRestaurant(Guid id, RestaurantSaveDto model)
         {
 
@@ -53,6 +55,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = $"{RolesNames.IT}")]
         public async Task<ActionResult> DeleteRestaurant(Guid id)
         {
 

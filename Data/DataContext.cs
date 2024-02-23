@@ -14,52 +14,15 @@ namespace Mataeem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure the relationship between AppUser and Order
             modelBuilder.Entity<AppUser>()
                 .HasMany(u => u.CustomerOrders)
                 .WithOne(o => o.Customer)
-                .HasForeignKey(o => o.CustomerId)
-                .IsRequired(false);
+                .HasForeignKey(o => o.CustomerId);
 
             modelBuilder.Entity<AppUser>()
-                .HasMany(u => u.DriverOrders)
-                .WithOne(o => o.AssignedDriver)
-                .HasForeignKey(o => o.DriverId)
-                .IsRequired(false);
-
-            // Ignore the DriverRestaurants property
-            modelBuilder.Entity<AppUser>()
-                .Ignore(u => u.DriverRestaurants);
-
-            modelBuilder.Entity<Invoice>()
-                .HasOne(i => i.Customer)
-                .WithMany(u => u.Invoices)
-                .HasForeignKey(i => i.CustomerId)
-                .IsRequired(false); 
-
-            modelBuilder.Entity<Invoice>()
-                .HasOne(i => i.CreatedBy)
-                .WithMany()
-                .HasForeignKey(i => i.CreatedById)
-                .IsRequired(); // Assuming CreatedBy is required
-
-            modelBuilder.Entity<Restaurant>()
-                .HasOne(r => r.CreatedBy)
-                .WithMany()
-                .HasForeignKey(r => r.CreatedById)
-                .IsRequired(); // Assuming CreatedBy is required
-
-            modelBuilder.Entity<Restaurant>()
-                .HasOne(r => r.Driver)
-                .WithMany()
-                .HasForeignKey(r => r.DriverId)
-                .IsRequired(false); // Assuming DriverId can be null
-
-            modelBuilder.Entity<Restaurant>()
-                .HasOne(r => r.UpdatedBy)
-                .WithMany()
-                .HasForeignKey(r => r.UpdatedById)
-                .IsRequired(false); // Assuming UpdatedById can be null
+                .HasMany(u => u.Invoices)
+                .WithOne(i => i.Customer)
+                .HasForeignKey(i => i.CustomerId);
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -67,6 +30,8 @@ namespace Mataeem.Data
 
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<DriverRestaurant> DriverRestaurants { get; set; }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<FoodBrand> FoodBrands { get; set; }
         public DbSet<CustomerBasket> CustomerBaskets { get; set; }

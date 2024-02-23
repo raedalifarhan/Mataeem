@@ -2,9 +2,7 @@
 using Mataeem.DTOs.ProductDTOs;
 using Mataeem.Interfaces;
 using Mataeem.Lib;
-using Mataeem.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Mataeem.Data.Repositories
 {

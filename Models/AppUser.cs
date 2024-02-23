@@ -19,7 +19,7 @@ namespace Mataeem.Models
         public ICollection<CustomerBasket>? CustomerBaskets { get; set; }
         public ICollection<Invoice>? Invoices { get; set; }
 
-        public ICollection<Restaurant>? DriverRestaurants { get; set; }
+        public ICollection<DriverRestaurant>? DriverRestaurants { get; set; }
 
 
         // audeting props

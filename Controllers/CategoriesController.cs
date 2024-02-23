@@ -1,5 +1,6 @@
 using Mataeem.DTOs.CategoryDTOs;
 using Mataeem.Interfaces;
+using Mataeem.RequestHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPost("{menuId}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> CreateCategory(Guid menuId, CategorySaveDto model)
         {
             var result = await _categoryRepository.CreateCategory(menuId, model);
@@ -34,6 +36,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> UpdateCategory(Guid id, CategorySaveDto model)
         {
 
@@ -45,6 +48,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> DeleteCategory(Guid id)
         {
 

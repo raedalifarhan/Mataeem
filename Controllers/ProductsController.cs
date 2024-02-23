@@ -1,5 +1,6 @@
 using Mataeem.DTOs.ProductDTOs;
 using Mataeem.Interfaces;
+using Mataeem.RequestHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPost("{categoryId}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> CreateProduct(Guid categoryId, ProductSaveDto model)
         {
             var result = await _productRepository.CreateProduct(categoryId, model);
@@ -41,6 +43,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> UpdateProduct(ProductSaveDto model)
         {
             var result = await _productRepository.UpdateProduct(model);
@@ -63,6 +66,7 @@ namespace Mataeem.Controllers
         //}
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
         public async Task<ActionResult> DeleteProduct(Guid id)
         {
 

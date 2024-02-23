@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using Mataeem.Data.Repositories;
 using Mataeem.DTOs.BusinessHoursDTOs;
 using Mataeem.DTOs.CategoryDTOs;
+using Mataeem.DTOs.DriverDTOs;
+using Mataeem.DTOs.DriverRestaurantDTOs;
 using Mataeem.DTOs.MenuDTOs;
 using Mataeem.DTOs.ProductDTOs;
 using Mataeem.DTOs.RestaurantDTOs;
 using Mataeem.Lib;
 using Mataeem.Models;
-using System.ComponentModel;
 
 namespace Mataeem.RequestHelpers
 {
@@ -37,6 +39,17 @@ namespace Mataeem.RequestHelpers
             CreateMap<OptionDto, Product>();
 
             CreateMap<OptionValueDto, Product>();
+
+            CreateMap<DriverRestaurant, DriverDto>()
+                .IncludeMembers(x => x.Driver)
+                .ForMember(dest => dest.AssignId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<AppUser, DriverDto>();
+
+            CreateMap<DriverRestaurant, RestaurantDto>()
+                .IncludeMembers(x => x.Restaurant)
+                .ForMember(dest => dest.AssignId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Restaurant, RestaurantDto>();
+
 
         }
     }

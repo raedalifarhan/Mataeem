@@ -1,5 +1,6 @@
 using Mataeem.DTOs.BusinessHoursDTOs;
 using Mataeem.Interfaces;
+using Mataeem.RequestHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpGet("{restaurantId}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}, {RolesNames.ADMIN}")]
         public async Task<ActionResult<List<BusinessHoursSaveDto>>> GetAll(Guid restaurantId)
         {
             return await _businessHoursRepository
@@ -25,6 +27,7 @@ namespace Mataeem.Controllers
         }
 
         [HttpPut("{restaurantId}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}, {RolesNames.ADMIN}")]
         public async Task<ActionResult> UpdateBusinessHours(Guid restaurantId, [FromBody] List<BusinessHoursSaveDto> model)
         {
 

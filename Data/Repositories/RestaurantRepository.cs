@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Mataeem.DTOs.CategoryDTOs;
 using Mataeem.DTOs.MenuDTOs;
 using Mataeem.DTOs.ProductDTOs;
