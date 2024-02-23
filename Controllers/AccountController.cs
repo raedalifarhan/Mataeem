@@ -84,15 +84,9 @@ namespace API.Controllers
             if (result.Succeeded)
             {
                 // add user to 'User' role by default.
-                await _userManager.AddToRoleAsync(user, RolesNames.ADMIN);
+                await _userManager.AddToRoleAsync(user, model.Role);
 
-                var role = await _userManager.GetRolesAsync(user);
-                if (role != null)
-                {
-                    return await CreateUserObject(user, role[0]);
-                }
-
-                return await CreateUserObject(user);
+                return await CreateUserObject(user, model.Role);
             }
 
             return BadRequest(result.Errors);
@@ -148,7 +142,7 @@ namespace API.Controllers
             if (result.Succeeded)
             {
                 // add user to 'User' role by default.
-                await _userManager.AddToRoleAsync(user, RolesNames.ADMIN);
+                await _userManager.AddToRoleAsync(user, model.Role);
 
                 // Generate verification code and send it to the user's phone number
                 var verificationCode = await _authService.CreatePhoneToken(model.PhoneNumber);
@@ -157,19 +151,39 @@ namespace API.Controllers
                 var token = await _authService.CreateToken(user);
 
                 // Return the verification code and token to the client for further processing
-                return Ok(new { VerificationCode = verificationCode, Token = token });
+                return CreateOTPUserObject(model, user, verificationCode, token);
             }
 
             // Return any validation errors if user creation failed
             return BadRequest(result.Errors);
         }
 
+        private UserDto CreateOTPUserObject(PhoneRegisterDto model, AppUser user, string verificationCode, string token)
+        {
+            return new UserDto
+            {
+                VerificationCode = verificationCode,
+                Token = token,
+                DisplayName = user.DisplayName,
+                Role = model.Role
+            };
+        }
+
+        //[Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
+        [AllowAnonymous]
+        [HttpGet("get-all-roles")]
+        public async Task<ActionResult<RolesDto>> GetAllRoles()
+        {
+            var roles = _roleManager.Roles.Select(x => x.Name).ToList();
+
+            return Ok(new RolesDto { Roles = roles });
+        }
 
         [Authorize]
         [HttpGet("current-userId-roles")]
         public async Task<ActionResult<UserIdRolesDto>> GetCurrentUser()
         {
-            return await getCurrentUserIdAndFirstRole();
+            return await getCurrentUserIdAndHisRoles();
         }
 
         [HttpPost("add-role")]
@@ -191,7 +205,7 @@ namespace API.Controllers
             return Ok(model);
         }
 
-        private async Task<ActionResult<UserDto>> CreateUserObject(AppUser user, string? role = RolesNames.ADMIN)
+        private async Task<ActionResult<UserDto>> CreateUserObject(AppUser user, string? role = RolesNames.CUSTOMER)
         {
             return new UserDto
             {
@@ -212,7 +226,7 @@ namespace API.Controllers
             };
         }
 
-        private async Task<ActionResult<UserIdRolesDto>> getCurrentUserIdAndFirstRole()
+        private async Task<ActionResult<UserIdRolesDto>> getCurrentUserIdAndHisRoles()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 

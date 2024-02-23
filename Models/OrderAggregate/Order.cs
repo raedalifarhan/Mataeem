@@ -31,6 +31,9 @@
         public AppUser? AssignedDriver { get; set; }
         public string? DriverId { get; set; }
 
+        public AppUser? Customer { get; set; }
+        public string? CustomerId { get; set; }
+
 
         public decimal GetTotal()
         {

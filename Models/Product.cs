@@ -31,6 +31,7 @@ namespace Mataeem.Models
         public FoodBrand? FoodBrand { get; set; }
         public Guid? FoodBrandId { get; set; }
 
+        public Product? Parent { get; set; }
         public Guid? ParentId { get; set; }
 
         public ICollection<Product>? Products { get; set; }

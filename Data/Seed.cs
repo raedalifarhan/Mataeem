@@ -21,8 +21,11 @@ namespace Mataeem.Data
                     // Create roles
                     var roles = new List<IdentityRole>
                     {
-                        new IdentityRole { Name = RolesNames.ADMIN },
+                        new IdentityRole { Name = RolesNames.IT },
                         new IdentityRole { Name = RolesNames.SUPERADMIN },
+                        new IdentityRole { Name = RolesNames.ADMIN },
+                        new IdentityRole { Name = RolesNames.DRIVER },
+                        new IdentityRole { Name = RolesNames.CUSTOMER },
                     };
 
                     // Add roles to the context and save changes
@@ -33,33 +36,61 @@ namespace Mataeem.Data
 
                     await context.SaveChangesAsync();
 
-                    // Create a user
-                    var user = new AppUser
+                    // Create a IT
+                    var IT = new AppUser
                     {
-                        DisplayName = "manager",
-                        UserName = "manager",
-                        Email = "manager@manager.com"
+                        DisplayName = "IT",
+                        UserName = "IT",
+                        Email = "IT@manager.com"
                     };
-
-                    // Create the user
-                    var createdUser = await userManager.CreateAsync(user, "Pa$$w0rd");
+                    // IT password
+                    var createdItUser = await userManager.CreateAsync(IT, "Pa$$w0rd");
 
                     // Check if the user was successfully created before assigning roles
-                    if (createdUser.Succeeded)
+                    if (createdItUser.Succeeded)
                     {
                         // Find the ADMIN role
-                        var adminRole = await context.Roles.Where(x => x.Name == RolesNames.SUPERADMIN).FirstOrDefaultAsync();
+                        var role = await context.Roles
+                            .Where(x => x.Name == RolesNames.IT)
+                            .FirstOrDefaultAsync();
 
-                        if (adminRole != null)
+                        if (role != null)
                         {
                             // Add the user to the ADMIN role
-                            await userManager.AddToRoleAsync(user, adminRole?.Name!);
+                            await userManager.AddToRoleAsync(IT, role?.Name!);
 
                             // Save changes after adding the user to the role
                             await context.SaveChangesAsync();
                         }
                     }
 
+                    // Create a Supper user
+                    var supperUser = new AppUser
+                    {
+                        DisplayName = "Manager",
+                        UserName = "Manager",
+                        Email = "manager@manager.com"
+                    };
+
+                    // Supper user password
+                    var createdSupperUser = await userManager.CreateAsync(supperUser, "Passw0rd");
+
+                    if (createdSupperUser.Succeeded)
+                    {
+                        // Find the ADMIN role
+                        var role = await context.Roles
+                            .Where(x => x.Name == RolesNames.SUPERADMIN)
+                            .FirstOrDefaultAsync();
+
+                        if (role != null)
+                        {
+                            // Add the user to the ADMIN role
+                            await userManager.AddToRoleAsync(supperUser, role?.Name!);
+
+                            // Save changes after adding the user to the role
+                            await context.SaveChangesAsync();
+                        }
+                    }
                 }
 
             }

@@ -1,5 +1,6 @@
 using Mataeem.DTOs.RestaurantDTOs;
 using Mataeem.Interfaces;
+using Mataeem.RequestHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,9 @@ namespace Mataeem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<RestaurantListDto>>> GetAllRestaurants()
+        public async Task<ActionResult<List<RestaurantListDto>>> GetAllRestaurants([FromQuery] RestaurantParams param)
         {
-            return Ok(await _restaurantRepository.GetAllRestaurants());
+            return Ok(await _restaurantRepository.GetAllRestaurants(param));
         }
 
         [HttpGet("{id}")]

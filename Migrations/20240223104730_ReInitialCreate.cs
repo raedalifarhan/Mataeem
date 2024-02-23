@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Mataeem.Migrations
 {
     /// <inheritdoc />
-    public partial class updateModelsss : Migration
+    public partial class ReInitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -202,6 +203,7 @@ namespace Mataeem.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MenuName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -239,15 +241,20 @@ namespace Mataeem.Migrations
                     Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssignedDriverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DriverId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DriverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_AssignedDriverId",
-                        column: x => x.AssignedDriverId,
+                        name: "FK_Orders_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_DriverId",
+                        column: x => x.DriverId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -288,6 +295,7 @@ namespace Mataeem.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     MenuId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -352,17 +360,22 @@ namespace Mataeem.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RestaurantName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocationLatitude = table.Column<double>(type: "float", nullable: true),
-                    LocationLongitude = table.Column<double>(type: "float", nullable: true),
+                    LocationLatitude = table.Column<double>(type: "float", nullable: false),
+                    LocationLongitude = table.Column<double>(type: "float", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rate = table.Column<int>(type: "int", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Website = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     MenuId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DriverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -371,6 +384,12 @@ namespace Mataeem.Migrations
                     table.ForeignKey(
                         name: "FK_Restaurants_AspNetUsers_CreatedById",
                         column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Restaurants_AspNetUsers_DriverId",
+                        column: x => x.DriverId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -403,7 +422,7 @@ namespace Mataeem.Migrations
                     ExpectedDeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -413,7 +432,8 @@ namespace Mataeem.Migrations
                         name: "FK_Invoices_AspNetUsers_CreatedById",
                         column: x => x.CreatedById,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Invoices_AspNetUsers_CustomerId",
                         column: x => x.CustomerId,
@@ -466,16 +486,20 @@ namespace Mataeem.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    RegularPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SellingPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Rate = table.Column<int>(type: "int", nullable: true),
+                    OptionType = table.Column<int>(type: "int", nullable: true),
+                    OptionCount = table.Column<int>(type: "int", nullable: true),
+                    IsMandatory = table.Column<bool>(type: "bit", nullable: false),
+                    MandatoryCount = table.Column<int>(type: "int", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FoodBrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UpdatedById = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -501,8 +525,8 @@ namespace Mataeem.Migrations
                         principalTable: "FoodBrands",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Products_Products_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_Products_Products_ParentId",
+                        column: x => x.ParentId,
                         principalTable: "Products",
                         principalColumn: "Id");
                 });
@@ -512,8 +536,9 @@ namespace Mataeem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    DayOfWeek = table.Column<int>(type: "int", nullable: false),
+                    OpenTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    CloseTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     RestaurantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -651,14 +676,19 @@ namespace Mataeem.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_AssignedDriverId",
+                name: "IX_Orders_CustomerId",
                 table: "Orders",
-                column: "AssignedDriverId");
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_DeliveryMethodId",
                 table: "Orders",
                 column: "DeliveryMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_DriverId",
+                table: "Orders",
+                column: "DriverId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -676,9 +706,9 @@ namespace Mataeem.Migrations
                 column: "FoodBrandId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductId",
+                name: "IX_Products_ParentId",
                 table: "Products",
-                column: "ProductId");
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_UpdatedById",
@@ -689,6 +719,11 @@ namespace Mataeem.Migrations
                 name: "IX_Restaurants_CreatedById",
                 table: "Restaurants",
                 column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurants_DriverId",
+                table: "Restaurants",
+                column: "DriverId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_MenuId",

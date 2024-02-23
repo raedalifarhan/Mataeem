@@ -11,7 +11,8 @@ namespace Mataeem.DTOs.ProductDTOs
         public decimal? RegularPrice { get; set; }
         public decimal? SellingPrice { get; set; }
         
-        public IFormFile? FormFile { get; set; }
+        public string? PictureBase64 { get; set; }
+        public string? PictureExtension { get; set; }
         public List<OptionDto>? Options { get; set; }
     }
 }

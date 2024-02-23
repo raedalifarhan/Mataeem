@@ -1,53 +1,34 @@
-﻿using Mataeem.Data;
-using Mataeem.DTOs.ProductDTOs;
-using Mataeem.Models;
+﻿using Mataeem.Models;
 
 namespace Mataeem.Lib
 {
-    public class ProductHelper
+    public class RestaurantHelper
     {
-        public static async Task<Guid> ConstructNewOption(OptionDto options, Guid productId, DataContext context)
+        public static bool IsRestaurantOpenNow(IList<BusinessHours>? openingHours)
         {
-            var option = new Product
+            if (openingHours == null)
+                return true;
+
+            // حساب الوقت الحالي
+            var currentTime = DateTime.Now;
+
+            // حساب اليوم الحالي بناءً على التوقيت المحلي
+            var currentDay = currentTime.DayOfWeek;
+
+            // التحقق مما إذا كان المطعم مفتوحًا في الوقت الحالي ويوم الأسبوع الحالي
+            foreach (var hours in openingHours)
             {
-                ProductName = options.ProductName,
-                OptionType = options.Type,
-                IsMandatory = options.IsMandatory,
-                MandatoryCount = options.MandatoryCount,
-                ParentId = productId,
-            };
-
-            context.Products.Add(option);
-            var result = await context.SaveChangesAsync() > 0;
-
-            return result ? option.Id : Guid.Empty;
-        }
-
-        public static async Task<Guid> ConstructNewProduct(ProductSaveDto model, Guid categoryId, DataContext context, string folderName)
-        {
-            var product = new Product
-            {
-                ProductName = model.ProductName,
-                Description = model.Description,
-                RegularPrice = model.RegularPrice,
-                SellingPrice = model.SellingPrice,
-                CreateDate = DateTime.Now,
-                CategoryId = categoryId,
-            };
-
-            if (model.FormFile != null)
-            {
-                var fileName = await FileHelper.SaveFileToServer(model.FormFile, folderName, product.PictureUrl);
-
-                if (fileName == null) return Guid.Empty;
-
-                product.PictureUrl = fileName;
+                if (hours.DayOfWeek.ToString() == currentDay.ToString())
+                {
+                    // التحقق من الوقت
+                    if (currentTime.TimeOfDay >= hours.OpenTime && currentTime.TimeOfDay <= hours.CloseTime)
+                    {
+                        return true; // المطعم مفتوح في الوقت الحالي
+                    }
+                }
             }
 
-            context.Products.Add(product);
-            var result = await context.SaveChangesAsync() > 0;
-
-            return result ? product.Id : Guid.Empty;
+            return false; // المطعم مغلق في الوقت الحالي
         }
     }
 }

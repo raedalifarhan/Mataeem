@@ -21,6 +21,16 @@ namespace Mataeem.RequestHelpers
 
         public List<T> Data { get; set; }
 
+        public static async Task<PagedList<T>> Create(IList<T> source, int pageNumber, int pageSize)
+        {
+            var count = source.Count;
+
+            var items = source.Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize).ToList();
+
+            return new PagedList<T>(items, count, pageNumber, pageSize);
+        }
+
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
         {
             var count = await source.CountAsync();

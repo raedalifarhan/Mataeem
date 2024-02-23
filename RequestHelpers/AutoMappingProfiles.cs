@@ -4,7 +4,9 @@ using Mataeem.DTOs.CategoryDTOs;
 using Mataeem.DTOs.MenuDTOs;
 using Mataeem.DTOs.ProductDTOs;
 using Mataeem.DTOs.RestaurantDTOs;
+using Mataeem.Lib;
 using Mataeem.Models;
+using System.ComponentModel;
 
 namespace Mataeem.RequestHelpers
 {
@@ -14,7 +16,7 @@ namespace Mataeem.RequestHelpers
         {
             CreateMap<Restaurant, RestaurantListDto>()
                 .ForMember(dest => dest.IsOpen, opt => opt.MapFrom(src => 
-                    RestaurantHelperLib.IsRestaurantOpenNow(src.OpeningHours)));
+                    RestaurantHelper.IsRestaurantOpenNow(src.OpeningHours)));
 
             CreateMap<RestaurantSaveDto, Restaurant>();
             
@@ -22,11 +24,20 @@ namespace Mataeem.RequestHelpers
 
             CreateMap<CategorySaveDto, Category>();
             CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryListDto>();
 
             CreateMap<MenuSaveDto, Menu>();
             CreateMap<Menu, MenuDto>();
+            CreateMap<Menu, MenuListDto>();
 
-            CreateMap<Product, ProductDto>();
+           CreateMap<Product, ProductDto>();
+
+            CreateMap<ProductSaveDto, Product>();
+
+            CreateMap<OptionDto, Product>();
+
+            CreateMap<OptionValueDto, Product>();
+
         }
     }
 

@@ -40,6 +40,17 @@ namespace Mataeem.Controllers
             return Ok("Created Successfully");
         }
 
+        [HttpPut]
+        public async Task<ActionResult> UpdateProduct(ProductSaveDto model)
+        {
+            var result = await _productRepository.UpdateProduct(model);
+
+            if (!result) return BadRequest("An error accured during Save Product, " +
+                "check model field and picture extencion.");
+
+            return Ok("Update Successfully");
+        }
+
         //[HttpPut("{id}")]
         //public async Task<ActionResult> UpdateProduct(Guid id, ProductSaveDto model)
         //{

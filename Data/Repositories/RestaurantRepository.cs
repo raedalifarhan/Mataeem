@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Mataeem.DTOs.CategoryDTOs;
 using Mataeem.DTOs.MenuDTOs;
 using Mataeem.DTOs.ProductDTOs;
@@ -6,6 +7,8 @@ using Mataeem.DTOs.RestaurantDTOs;
 using Mataeem.Interfaces;
 using Mataeem.Lib;
 using Mataeem.Models;
+using Mataeem.RequestHelpers;
+using Mataeem.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mataeem.Data.Repositories
@@ -23,13 +26,37 @@ namespace Mataeem.Data.Repositories
             _pictureBase = "restaurants-images";
         }
 
-        public async Task<List<RestaurantListDto>> GetAllRestaurants()
+        public async Task<PagedList<RestaurantListDto>> GetAllRestaurants(RestaurantParams param)
         {
-            var query = await _context.Restaurants
-                .Where(x => x.IsActive)
-                .ToListAsync();
+            var withDistance = (param != null && param.Latitude > 0 && param.Longitude > 0) ? true : false;
 
-            return _mapper.Map<List<RestaurantListDto>>(query);
+            var query =await (from restaurant in _context.Restaurants
+                        where restaurant.IsActive
+                        select new RestaurantListDto
+                        {
+                            Id = restaurant.Id,
+                            RestaurantName = restaurant.RestaurantName,
+                            Distance = withDistance ?
+                                       DistanceCalculator.CalculateDistance(
+                                           param!.Latitude ?? 0,
+                                           param!.Longitude ?? 0,
+                                           restaurant.LocationLatitude,
+                                           restaurant.LocationLongitude) : 0,
+
+                            City = restaurant.City,
+                            District = restaurant.District,
+                            Address = restaurant.Address,
+                            IsOpen = RestaurantHelper.IsRestaurantOpenNow(restaurant.OpeningHours),
+                            Rate = restaurant.Rate,
+                            PictureUrl = restaurant.PictureUrl
+                        }).ToListAsync();
+
+            if (withDistance)
+                return await PagedList<RestaurantListDto>
+                    .Create(query.OrderBy(x => x.Distance).ToList(), param!.PageNumber, param.PageSize);
+            else
+                return await PagedList<RestaurantListDto>
+                    .Create(query.ToList(), param!.PageNumber, param.PageSize);
         }
 
         public async Task<RestaurantDetailsDto> GetRestaurant(Guid id)
@@ -41,8 +68,8 @@ namespace Mataeem.Data.Repositories
                 {
                     Id = r.Id,
                     RestaurantName = r.RestaurantName,
-                    LocationLatitude = r.LocationLatitude ?? 0,
-                    LocationLongitude = r.LocationLongitude ?? 0,
+                    LocationLatitude = r.LocationLatitude,
+                    LocationLongitude = r.LocationLongitude,
                     City = r.City ?? string.Empty,
                     District = r.District ?? string.Empty,
                     Address = r.Address ?? string.Empty,

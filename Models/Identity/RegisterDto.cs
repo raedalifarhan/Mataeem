@@ -17,6 +17,9 @@ namespace Mataeem.Models.Identity
         [Required]
         public string DisplayName { get; set; } = default!;
 
+        [Required]
+        public string Role { get; set; } = default!;
+
         //[Required]
         //public Guid BranchId { get; set; } = default!;
     }

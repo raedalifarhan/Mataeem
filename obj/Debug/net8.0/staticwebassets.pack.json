@@ -45,6 +45,22 @@
       "PackagePath": "staticwebassets\\products-images\\20240221115820testImage.png"
     },
     {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240223110145test update parent..png",
+      "PackagePath": "staticwebassets\\products-images\\20240223110145test update parent..png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240223111413test update parent..png",
+      "PackagePath": "staticwebassets\\products-images\\20240223111413test update parent..png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240223112322test update parent.png",
+      "PackagePath": "staticwebassets\\products-images\\20240223112322test update parent.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240223112644test update parent.png",
+      "PackagePath": "staticwebassets\\products-images\\20240223112644test update parent.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Mataeem.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

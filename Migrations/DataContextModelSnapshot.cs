@@ -280,6 +280,7 @@ namespace Mataeem.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CustomerId")
@@ -403,7 +404,7 @@ namespace Mataeem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AssignedDriverId")
+                    b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CustomerPhoneNumber")
@@ -414,7 +415,7 @@ namespace Mataeem.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DriverId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -432,9 +433,11 @@ namespace Mataeem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedDriverId");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DeliveryMethodId");
+
+                    b.HasIndex("DriverId");
 
                     b.ToTable("Orders");
                 });
@@ -503,9 +506,6 @@ namespace Mataeem.Migrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -530,7 +530,7 @@ namespace Mataeem.Migrations
 
                     b.HasIndex("FoodBrandId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ParentId");
 
                     b.HasIndex("UpdatedById");
 
@@ -556,10 +556,14 @@ namespace Mataeem.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DriverId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -567,10 +571,10 @@ namespace Mataeem.Migrations
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("LocationLatitude")
+                    b.Property<double>("LocationLatitude")
                         .HasColumnType("float");
 
-                    b.Property<double?>("LocationLongitude")
+                    b.Property<double>("LocationLongitude")
                         .HasColumnType("float");
 
                     b.Property<Guid?>("MenuId")
@@ -598,6 +602,8 @@ namespace Mataeem.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
+
+                    b.HasIndex("DriverId");
 
                     b.HasIndex("MenuId");
 
@@ -779,7 +785,7 @@ namespace Mataeem.Migrations
             modelBuilder.Entity("Mataeem.Models.CustomerBasket", b =>
                 {
                     b.HasOne("Mataeem.Models.AppUser", "Customer")
-                        .WithMany("Orders")
+                        .WithMany("CustomerBaskets")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -812,7 +818,9 @@ namespace Mataeem.Migrations
                 {
                     b.HasOne("Mataeem.Models.AppUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Mataeem.Models.AppUser", "Customer")
                         .WithMany("Invoices")
@@ -858,15 +866,19 @@ namespace Mataeem.Migrations
 
             modelBuilder.Entity("Mataeem.Models.OrderAggregate.Order", b =>
                 {
-                    b.HasOne("Mataeem.Models.AppUser", "AssignedDriver")
-                        .WithMany("DriverOrders")
-                        .HasForeignKey("AssignedDriverId");
+                    b.HasOne("Mataeem.Models.AppUser", "Customer")
+                        .WithMany("CustomerOrders")
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("Mataeem.Models.OrderAggregate.DeliveryMethod", "DeliveryMethod")
                         .WithMany()
                         .HasForeignKey("DeliveryMethodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Mataeem.Models.AppUser", "AssignedDriver")
+                        .WithMany("DriverOrders")
+                        .HasForeignKey("DriverId");
 
                     b.OwnsOne("Mataeem.Models.OrderAggregate.Address", "ShipToAddress", b1 =>
                         {
@@ -900,6 +912,8 @@ namespace Mataeem.Migrations
                         });
 
                     b.Navigation("AssignedDriver");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("DeliveryMethod");
 
@@ -953,9 +967,9 @@ namespace Mataeem.Migrations
                         .WithMany("Products")
                         .HasForeignKey("FoodBrandId");
 
-                    b.HasOne("Mataeem.Models.Product", null)
+                    b.HasOne("Mataeem.Models.Product", "Parent")
                         .WithMany("Products")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ParentId");
 
                     b.HasOne("Mataeem.Models.AppUser", "UpdatedBy")
                         .WithMany()
@@ -967,6 +981,8 @@ namespace Mataeem.Migrations
 
                     b.Navigation("FoodBrand");
 
+                    b.Navigation("Parent");
+
                     b.Navigation("UpdatedBy");
                 });
 
@@ -974,7 +990,13 @@ namespace Mataeem.Migrations
                 {
                     b.HasOne("Mataeem.Models.AppUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mataeem.Models.AppUser", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId");
 
                     b.HasOne("Mataeem.Models.Menu", "Menu")
                         .WithMany("Restaurants")
@@ -985,6 +1007,8 @@ namespace Mataeem.Migrations
                         .HasForeignKey("UpdatedById");
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("Driver");
 
                     b.Navigation("Menu");
 
@@ -1044,11 +1068,13 @@ namespace Mataeem.Migrations
 
             modelBuilder.Entity("Mataeem.Models.AppUser", b =>
                 {
+                    b.Navigation("CustomerBaskets");
+
+                    b.Navigation("CustomerOrders");
+
                     b.Navigation("DriverOrders");
 
                     b.Navigation("Invoices");
-
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Mataeem.Models.Category", b =>

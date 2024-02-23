@@ -14,8 +14,12 @@ namespace Mataeem.Models
 
         // Other relevant customer properties
         public ICollection<Order>? DriverOrders { get; set; }
-        public ICollection<CustomerBasket>? Orders { get; set; }
+        public ICollection<Order>? CustomerOrders { get; set; }
+
+        public ICollection<CustomerBasket>? CustomerBaskets { get; set; }
         public ICollection<Invoice>? Invoices { get; set; }
+
+        public ICollection<Restaurant>? DriverRestaurants { get; set; }
 
 
         // audeting props

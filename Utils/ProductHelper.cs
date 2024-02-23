@@ -1,34 +1,82 @@
-﻿using Mataeem.Models;
+﻿using Mataeem.Data;
+using Mataeem.DTOs.ProductDTOs;
+using Mataeem.Models;
 
 namespace Mataeem.Lib
 {
-    public class RestaurantHelper
+    public class ProductHelper
     {
-        public static bool IsRestaurantOpenNow(IList<BusinessHours>? openingHours)
+        public static async Task<Guid> CreateNewOption(OptionDto options, Guid productId, DataContext context)
         {
-            if (openingHours == null)
-                return true;
-
-            // حساب الوقت الحالي
-            var currentTime = DateTime.Now;
-
-            // حساب اليوم الحالي بناءً على التوقيت المحلي
-            var currentDay = currentTime.DayOfWeek;
-
-            // التحقق مما إذا كان المطعم مفتوحًا في الوقت الحالي ويوم الأسبوع الحالي
-            foreach (var hours in openingHours)
+            var option = new Product
             {
-                if (hours.DayOfWeek.ToString() == currentDay.ToString())
+                ProductName = options.ProductName,
+                OptionType = options.Type,
+                IsMandatory = options.IsMandatory,
+                MandatoryCount = options.MandatoryCount,
+                ParentId = productId,
+            };
+
+            context.Products.Add(option);
+            var result = await context.SaveChangesAsync() > 0;
+
+            return result ? option.Id : Guid.Empty;
+        }
+
+        public static async Task<Guid> CreateNewProduct(ProductSaveDto model, Guid categoryId, DataContext context, string folderName)
+        {
+            var product = new Product
+            {
+                ProductName = model.ProductName,
+                Description = model.Description,
+                RegularPrice = model.RegularPrice,
+                SellingPrice = model.SellingPrice,
+                CreateDate = DateTime.Now,
+                CategoryId = categoryId,
+            };
+
+
+            if (!string.IsNullOrEmpty(model.PictureBase64) && !string.IsNullOrEmpty(model.PictureExtension!))
+            {
+                try
                 {
-                    // التحقق من الوقت
-                    if (currentTime.TimeOfDay >= hours.OpenTime && currentTime.TimeOfDay <= hours.CloseTime)
+                    product.PictureUrl = await ConvertBase64ToIFormFileThenSave(
+                        model.PictureBase64, model.PictureExtension, folderName, model.ProductName, product.PictureUrl!);
+
+                    if (string.IsNullOrEmpty(product.PictureUrl)) 
                     {
-                        return true; // المطعم مفتوح في الوقت الحالي
+                        return Guid.Empty;
                     }
+                }
+                catch (Exception) {
+                    return Guid.Empty;
                 }
             }
 
-            return false; // المطعم مغلق في الوقت الحالي
+            context.Products.Add(product);
+            var result = await context.SaveChangesAsync() > 0;
+
+            return result ? product.Id : Guid.Empty;
+        }
+
+        public static async Task<string> ConvertBase64ToIFormFileThenSave(
+            string base64, string extension, string folderName, string fileName, string pictureUrl)
+        {
+            var iFormFile = FileHelper.ConvertBase64ToIFormFile(base64!, extension!, fileName);
+
+            return await FileHelper
+                .SaveFileToServer(iFormFile, folderName, pictureUrl);
+        }
+
+        public static Product CreateNewValue(OptionValueDto vals, Guid optionId)
+        {
+            return new Product
+            {
+                ProductName = vals.ProductName,
+                RegularPrice = vals.RegularPrice,
+                SellingPrice = vals.SellingPrice,
+                ParentId = optionId,
+            };
         }
     }
 }

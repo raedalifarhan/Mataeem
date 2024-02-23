@@ -14,13 +14,52 @@ namespace Mataeem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            // Configure the relationship between AppUser and Invoice
+            // Configure the relationship between AppUser and Order
             modelBuilder.Entity<AppUser>()
-                .HasMany(u => u.Invoices) // AppUser has many Invoices
-                .WithOne(i => i.Customer) // Invoice belongs to one AppUser
-                .HasForeignKey(i => i.CustomerId); // Foreign key property in Invoice
+                .HasMany(u => u.CustomerOrders)
+                .WithOne(o => o.Customer)
+                .HasForeignKey(o => o.CustomerId)
+                .IsRequired(false);
 
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.DriverOrders)
+                .WithOne(o => o.AssignedDriver)
+                .HasForeignKey(o => o.DriverId)
+                .IsRequired(false);
+
+            // Ignore the DriverRestaurants property
+            modelBuilder.Entity<AppUser>()
+                .Ignore(u => u.DriverRestaurants);
+
+            modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.Customer)
+                .WithMany(u => u.Invoices)
+                .HasForeignKey(i => i.CustomerId)
+                .IsRequired(false); 
+
+            modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.CreatedBy)
+                .WithMany()
+                .HasForeignKey(i => i.CreatedById)
+                .IsRequired(); // Assuming CreatedBy is required
+
+            modelBuilder.Entity<Restaurant>()
+                .HasOne(r => r.CreatedBy)
+                .WithMany()
+                .HasForeignKey(r => r.CreatedById)
+                .IsRequired(); // Assuming CreatedBy is required
+
+            modelBuilder.Entity<Restaurant>()
+                .HasOne(r => r.Driver)
+                .WithMany()
+                .HasForeignKey(r => r.DriverId)
+                .IsRequired(false); // Assuming DriverId can be null
+
+            modelBuilder.Entity<Restaurant>()
+                .HasOne(r => r.UpdatedBy)
+                .WithMany()
+                .HasForeignKey(r => r.UpdatedById)
+                .IsRequired(false); // Assuming UpdatedById can be null
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -8,9 +8,9 @@ namespace Mataeem.Models
         [Required]
         public string RestaurantName { get; set; } = default!;
 
-        public double? LocationLatitude { get; set; }
+        public double LocationLatitude { get; set; } = double.NaN;
 
-        public double? LocationLongitude { get; set; }
+        public double LocationLongitude { get; set; } = double.NaN;
 
         public string? City { get; set; } = default!;
 
@@ -35,6 +35,9 @@ namespace Mataeem.Models
         // nav properties
         public Menu? Menu {  get; set; }
         public Guid? MenuId { get; set; }
+
+        public AppUser? Driver { get; set; }
+        public string? DriverId { get; set; }
 
         public IList<BusinessHours>? OpeningHours { get; set; }
 
