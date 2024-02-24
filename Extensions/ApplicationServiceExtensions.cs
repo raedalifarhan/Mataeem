@@ -28,6 +28,8 @@ namespace Mataeem.Extensions
             services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
             services.AddScoped(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
+            services.AddScoped(typeof(IDriverRepository), typeof(DriverRepository));
+            services.AddScoped(typeof(ICuisineRepository), typeof(CuisineRepository));
 
 
             return services;

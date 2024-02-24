@@ -23,7 +23,7 @@ namespace Mataeem.Lib
             return result ? option.Id : Guid.Empty;
         }
 
-        public static async Task<Guid> CreateNewProduct(ProductSaveDto model, Guid categoryId, DataContext context, string folderName)
+        public static async Task<Guid> CreateNewProduct(ProductSaveDto model, Guid categoryId, Guid cuisineId, DataContext context, string folderName)
         {
             var product = new Product
             {
@@ -33,6 +33,7 @@ namespace Mataeem.Lib
                 SellingPrice = model.SellingPrice,
                 CreateDate = DateTime.Now,
                 CategoryId = categoryId,
+                CuisineId = cuisineId,
             };
 
 
@@ -68,15 +69,23 @@ namespace Mataeem.Lib
                 .SaveFileToServer(iFormFile, folderName, pictureUrl);
         }
 
-        public static Product CreateNewValue(OptionValueDto vals, Guid optionId)
+        public static async Task<Guid> CreateNewValue(DataContext context, OptionValueDto vals, Guid optionId)
         {
-            return new Product
+            var value = new Product
             {
                 ProductName = vals.ProductName,
                 RegularPrice = vals.RegularPrice,
                 SellingPrice = vals.SellingPrice,
                 ParentId = optionId,
             };
+
+            context.Products.Add(value);
+
+            var result = await context.SaveChangesAsync() > 0;
+
+            if (!result) return Guid.Empty;
+
+            return value.Id;
         }
     }
 }

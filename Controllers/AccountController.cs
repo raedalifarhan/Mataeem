@@ -242,5 +242,36 @@ namespace API.Controllers
                 UserId = user!.Id
             };
         }
+
+        [HttpGet("get-users-by-role/{roleName}")]
+        [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
+        public async Task<ActionResult<List<UserDto>>> GetUsersByRole(string roleName)
+        {
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                return NotFound($"Role '{roleName}' not found.");
+            }
+
+            var usersInRole = await _userManager.GetUsersInRoleAsync(roleName);
+            if (usersInRole == null || !usersInRole.Any())
+            {
+                return NotFound($"No users found in the role '{roleName}'.");
+            }
+
+            var usersDto = new List<UserDto>();
+            foreach (var user in usersInRole)
+            {
+                usersDto.Add(new UserDto
+                {
+                    Id = user.Id,
+                    DisplayName = user.DisplayName,
+                    Role = roleName,
+                    Username = user.UserName,
+                });
+            }
+
+            return Ok(usersDto);
+        }
     }
 }

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mataeem.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
@@ -18,6 +17,7 @@ namespace Mataeem.Controllers
             _categoryRepository = categoryRepository;
         }
 
+        [AllowAnonymous]
         [HttpGet("{menuId}")]
         public async Task<ActionResult<List<CategoryListDto>>> GetAllCategoriesByMenuId(Guid menuId)
         {

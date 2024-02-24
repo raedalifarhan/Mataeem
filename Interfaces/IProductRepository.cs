@@ -8,7 +8,7 @@ namespace Mataeem.Interfaces
 
         Task<ProductDto> GetProduct(Guid id);
 
-        Task<bool> CreateProduct(Guid categoryId, ProductSaveDto model);
+        Task<bool> CreateProduct(Guid categoryId, Guid cuisineId, ProductSaveDto model);
 
         Task<bool> UpdateProduct(ProductSaveDto model);
 

@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using Mataeem.DTOs.DriverDTOs;
 using Mataeem.DTOs.DriverRestaurantDTOs;
-using Mataeem.DTOs.RestaurantDTOs;
 using Mataeem.Interfaces;
 using Mataeem.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,12 @@ namespace Mataeem.Data.Repositories
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly string _pictureBase;
+
+        public DriverRepository(DataContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
 
         public async Task<bool> AssignDriverToRestaurant(string driverId, Guid restaurantId)
         {
@@ -62,7 +66,7 @@ namespace Mataeem.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<List<RestaurantDto>> GetAllDriversByRestaurantId(string driverId, bool all = false)
+        public async Task<List<RestaurantDto>> GetAllRestaurantsByDriverId(string driverId, bool all = false)
         {
             var query = _context.DriverRestaurants
                 .Include(x => x.Restaurant)

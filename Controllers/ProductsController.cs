@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mataeem.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
@@ -18,23 +17,25 @@ namespace Mataeem.Controllers
             _productRepository = productRepository;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<ProductDto>>> GetAllProducts()
         {
             return Ok(await _productRepository.GetAllProducts());
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProduct(Guid id)
         {
             return Ok(await _productRepository.GetProduct(id));
         }
 
-        [HttpPost("{categoryId}")]
         [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]
-        public async Task<ActionResult> CreateProduct(Guid categoryId, ProductSaveDto model)
+        [HttpPost("category/{categoryId}/cuisine/{cuisineId}")]
+        public async Task<ActionResult> CreateProduct(Guid categoryId, Guid cuisineId, ProductSaveDto model)
         {
-            var result = await _productRepository.CreateProduct(categoryId, model);
+            var result = await _productRepository.CreateProduct(categoryId, cuisineId, model);
 
             if (!result) return BadRequest("An error accured during Save Product, " +
                 "check model field and picture extencion.");
@@ -53,17 +54,6 @@ namespace Mataeem.Controllers
 
             return Ok("Update Successfully");
         }
-
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult> UpdateProduct(Guid id, ProductSaveDto model)
-        //{
-
-        //    var result = await _productRepository.UpdateProduct(id, model);
-
-        //    if (!result) return BadRequest("An error accured during Save Product ");
-
-        //    return Ok("Updated Successfully");
-        //}
 
         [HttpDelete("{id}")]
         [Authorize(Roles = $"{RolesNames.SUPERADMIN}, {RolesNames.IT}")]

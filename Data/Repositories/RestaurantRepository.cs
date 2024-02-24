@@ -82,7 +82,7 @@ namespace Mataeem.Data.Repositories
                         MenuName = r.Menu!.MenuName,
                         Categories = r.Menu.Categories!.Select(c => new CategoryDto
                         {
-                            ProductName = c.CategoryName,
+                            CategoryName = c.CategoryName,
                             Products = _context.Products
                                 .Where(r => r.CategoryId == c.Id)
                                 .Select(p => new ProductDto
@@ -177,6 +177,25 @@ namespace Mataeem.Data.Repositories
 
             restaurant.LastUpdateDate = DateTime.Now;
             restaurant.IsActive = false;
+
+            var result = await _context.SaveChangesAsync() > 0;
+
+            if (!result) return false;
+
+            return true;
+        }
+
+        public async Task<bool> AssignMenuToRestaurant(Guid menuId, Guid restaurantId)
+        {
+            if (restaurantId == Guid.Empty || menuId == Guid.Empty) return false;
+
+            var restaurant = await _context.Restaurants.FindAsync(restaurantId);
+
+            if (restaurant == null) return false;
+
+            restaurant.MenuId = menuId;
+
+
 
             var result = await _context.SaveChangesAsync() > 0;
 

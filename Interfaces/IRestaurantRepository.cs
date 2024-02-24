@@ -10,5 +10,6 @@ namespace Mataeem.Interfaces
         Task<bool> CreateRestaurant(RestaurantSaveDto model);
         Task<bool> UpdateRestaurant(Guid id, RestaurantSaveDto model);
         Task<bool> DeleteRestaurant(Guid id);
+        Task<bool> AssignMenuToRestaurant(Guid menuId, Guid restaurantId);
     }
 }

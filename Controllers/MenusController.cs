@@ -8,7 +8,6 @@ namespace Mataeem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [AllowAnonymous]
     public class MenusController : ControllerBase
     {
         private readonly IMenuRepository _menuRepository;
@@ -18,6 +17,7 @@ namespace Mataeem.Controllers
             _menuRepository = menuRepository;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<MenuListDto>>> GetAllMenus()
         {

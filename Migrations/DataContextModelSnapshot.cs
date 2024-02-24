@@ -206,6 +206,40 @@ namespace Mataeem.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Mataeem.Models.Cuisine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CuisineName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Cuisines");
+                });
+
             modelBuilder.Entity("Mataeem.Models.CustomerBasket", b =>
                 {
                     b.Property<Guid>("Id")
@@ -512,6 +546,9 @@ namespace Mataeem.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<Guid?>("CuisineId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -560,6 +597,8 @@ namespace Mataeem.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CreatedById");
+
+                    b.HasIndex("CuisineId");
 
                     b.HasIndex("FoodBrandId");
 
@@ -637,6 +676,21 @@ namespace Mataeem.Migrations
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("Restaurants");
+                });
+
+            modelBuilder.Entity("Mataeem.Models.RestaurantCuisine", b =>
+                {
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CuisineId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RestaurantId", "CuisineId");
+
+                    b.HasIndex("CuisineId");
+
+                    b.ToTable("RestaurantCuisines");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -805,6 +859,21 @@ namespace Mataeem.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("Menu");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("Mataeem.Models.Cuisine", b =>
+                {
+                    b.HasOne("Mataeem.Models.AppUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Mataeem.Models.AppUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
 
                     b.Navigation("UpdatedBy");
                 });
@@ -1007,6 +1076,10 @@ namespace Mataeem.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
+                    b.HasOne("Mataeem.Models.Cuisine", "Cuisine")
+                        .WithMany("Products")
+                        .HasForeignKey("CuisineId");
+
                     b.HasOne("Mataeem.Models.FoodBrand", "FoodBrand")
                         .WithMany("Products")
                         .HasForeignKey("FoodBrandId");
@@ -1022,6 +1095,8 @@ namespace Mataeem.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("Cuisine");
 
                     b.Navigation("FoodBrand");
 
@@ -1049,6 +1124,25 @@ namespace Mataeem.Migrations
                     b.Navigation("Menu");
 
                     b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("Mataeem.Models.RestaurantCuisine", b =>
+                {
+                    b.HasOne("Mataeem.Models.Cuisine", "Cuisine")
+                        .WithMany("RestaurantCuisines")
+                        .HasForeignKey("CuisineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mataeem.Models.Restaurant", "Restaurant")
+                        .WithMany("RestaurantCuisines")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cuisine");
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1120,6 +1214,13 @@ namespace Mataeem.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Mataeem.Models.Cuisine", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("RestaurantCuisines");
+                });
+
             modelBuilder.Entity("Mataeem.Models.CustomerBasket", b =>
                 {
                     b.Navigation("Items");
@@ -1154,6 +1255,8 @@ namespace Mataeem.Migrations
                     b.Navigation("DriverRestaurants");
 
                     b.Navigation("OpeningHours");
+
+                    b.Navigation("RestaurantCuisines");
                 });
 #pragma warning restore 612, 618
         }

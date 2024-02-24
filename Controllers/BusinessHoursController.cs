@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mataeem.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class BusinessHoursController : ControllerBase

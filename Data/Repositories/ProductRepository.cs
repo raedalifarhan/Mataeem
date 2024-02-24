@@ -90,24 +90,29 @@ namespace Mataeem.Data.Repositories
             return product ?? null!;
         }
 
-        public async Task<bool> CreateProduct(Guid categoryId, ProductSaveDto model)
+        public async Task<bool> CreateProduct(Guid categoryId, Guid cuisineId, ProductSaveDto model)
         {
-            var productId = await ProductHelper.CreateNewProduct(model, categoryId, _context, _pictureBase);
+            var productId = await ProductHelper.CreateNewProduct(model, categoryId, cuisineId, _context, _pictureBase);
 
             if (productId == Guid.Empty) return false;
 
-            model.Options?.ForEach(async options =>
+            if (model.Options != null)
             {
-                var optionId = await ProductHelper.CreateNewOption(options, productId, _context);
-
-                options.Values?.ForEach(vals =>
+                foreach (var options in model.Options)
                 {
-                    _context.Products.Add(
-                        ProductHelper.CreateNewValue(vals, optionId));
-                });
+                    var optionId = await ProductHelper.CreateNewOption(options, productId, _context);
+
+                    if (options.Values != null)
+                    {
+                        foreach (var vals in options.Values)
+                        {
+                            await ProductHelper.CreateNewValue(_context, vals, optionId);
+                        }
+                    }
+                }
 
                 await _context.SaveChangesAsync();
-            });
+            }
 
             return true;
         }
@@ -120,6 +125,7 @@ namespace Mataeem.Data.Repositories
         * repeat last two steps for values too.
         * last step is loop on remains ids and remove product (removed options or values)
         */
+
         public async Task<bool> UpdateProduct(ProductSaveDto model)
         {
             if (model == null) return false;
@@ -166,10 +172,9 @@ namespace Mataeem.Data.Repositories
 
                             if (option.Values != null && option.Values.Any())
                             {
-                                option.Values?.ForEach(vals =>
+                                option.Values?.ForEach(async vals =>
                                 {
-                                    _context.Products.Add(
-                                        ProductHelper.CreateNewValue(vals, optionId));
+                                    await ProductHelper.CreateNewValue(_context, vals, optionId);
                                 });
 
                                 await _context.SaveChangesAsync();
@@ -189,8 +194,7 @@ namespace Mataeem.Data.Repositories
                                 {
                                     if (vals.Id == Guid.Empty) // create new value.
                                     {
-                                        _context.Products.Add(
-                                        ProductHelper.CreateNewValue(vals, option.Id));
+                                        await ProductHelper.CreateNewValue(_context, vals, option.Id);
                                     } else // update exist value.
                                     {
                                         var ProductOptionValue = await _context.Products.FindAsync(vals.Id);
@@ -200,7 +204,6 @@ namespace Mataeem.Data.Repositories
                                     }
                                 }
                             }
-
                         }
                     }
                     // Delete romoved option and values

@@ -28,6 +28,9 @@ namespace Mataeem.Models
         public Category? Category { get; set; }
         public Guid? CategoryId { get; set; }
 
+        public Cuisine? Cuisine { get; set; }
+        public Guid? CuisineId { get; set; }
+
         public FoodBrand? FoodBrand { get; set; }
         public Guid? FoodBrandId { get; set; }
 

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mataeem.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class RestaurantsController : ControllerBase
@@ -19,12 +18,14 @@ namespace Mataeem.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<RestaurantListDto>>> GetAllRestaurants([FromQuery] RestaurantParams param)
         {
             return Ok(await _restaurantRepository.GetAllRestaurants(param));
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<RestaurantDetailsDto>> GetRestaurant(Guid id)
         {
             return Ok(await _restaurantRepository.GetRestaurant(id));
@@ -64,6 +65,17 @@ namespace Mataeem.Controllers
             if (!result) return BadRequest("An error accured during dedctivate restaurant ");
 
             return Ok("deactivated Successfully!");
+        }
+        
+        [HttpGet("assign/menu/{menuId}/restaurant/{restaurantId}")]
+        [Authorize(Roles = $"{RolesNames.IT}, {RolesNames.SUPERADMIN}")]
+        public async Task<ActionResult> AssignMenuToRestaurant(Guid menuId, Guid restaurantId)
+        {
+            var isSuccess = await _restaurantRepository.AssignMenuToRestaurant(menuId, restaurantId);
+
+            if (!isSuccess) return BadRequest("An error occurec during assign menu to restaurant.");
+
+            return Ok("Assigned successfuly");
         }
 
     }

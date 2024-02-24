@@ -43,8 +43,7 @@ namespace Mataeem.Extensions
             {
                 opt.AddPolicy("Access-Control-Allow-Origin", policy =>
                 {
-                    //policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200", "http://localhost:3000");
-                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200", "http://localhost:3000");
                 });
             });
 

@@ -1,4 +1,5 @@
-﻿namespace Mataeem.DTOs.ProductDTOs
+﻿
+namespace Mataeem.DTOs.ProductDTOs
 {
     public class ProductDto
     {

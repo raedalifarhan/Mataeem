@@ -24,6 +24,19 @@ namespace Mataeem.Data
                 .WithOne(i => i.Customer)
                 .HasForeignKey(i => i.CustomerId);
 
+            modelBuilder.Entity<RestaurantCuisine>()
+                .HasKey(rc => new { rc.RestaurantId, rc.CuisineId });
+
+            modelBuilder.Entity<RestaurantCuisine>()
+                .HasOne(rc => rc.Restaurant)
+                .WithMany(r => r.RestaurantCuisines)
+                .HasForeignKey(rc => rc.RestaurantId);
+
+            modelBuilder.Entity<RestaurantCuisine>()
+                .HasOne(rc => rc.Cuisine)
+                .WithMany(c => c.RestaurantCuisines)
+                .HasForeignKey(rc => rc.CuisineId);
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
@@ -31,7 +44,8 @@ namespace Mataeem.Data
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<DriverRestaurant> DriverRestaurants { get; set; }
-
+        public DbSet<Cuisine> Cuisines { get; set; }
+        public DbSet<RestaurantCuisine> RestaurantCuisines { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<FoodBrand> FoodBrands { get; set; }
         public DbSet<CustomerBasket> CustomerBaskets { get; set; }
@@ -42,6 +56,5 @@ namespace Mataeem.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
         public DbSet<BusinessHours> BusinessHours { get; set; }
-        
     }
 }

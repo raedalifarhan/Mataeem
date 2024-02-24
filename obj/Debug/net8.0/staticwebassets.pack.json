@@ -61,6 +61,86 @@
       "PackagePath": "staticwebassets\\products-images\\20240223112644test update parent.png"
     },
     {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224100257product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224100257product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224100852product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224100852product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224101421product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224101421product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224113915product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224113915product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224114158product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224114158product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224114535product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224114535product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224115257product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224115257product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224115648product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224115648product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224120135product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224120135product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224120659product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224120659product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224120747product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224120747product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224121323product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224121323product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224121406product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224121406product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224121509product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224121509product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224121539product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224121539product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224121943product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224121943product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224122306product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224122306product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\products-images\\20240224122327product 1.png",
+      "PackagePath": "staticwebassets\\products-images\\20240224122327product 1.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\restaurants-images\\20240224094508testImage.png",
+      "PackagePath": "staticwebassets\\restaurants-images\\20240224094508testImage.png"
+    },
+    {
+      "Id": "D:\\HiPhone\\Mataeem\\Mataeem\\wwwroot\\restaurants-images\\20240224094557testImage.png",
+      "PackagePath": "staticwebassets\\restaurants-images\\20240224094557testImage.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Mataeem.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
